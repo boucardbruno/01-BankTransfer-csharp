@@ -79,13 +79,10 @@ public class MegaTransferEngineTest
     [Test]
     public void Should_verify_how_many_received_when_update_balance()
     {
-        var httpRiskClient = BuildFakeHttpClient();
-        var sqlDatabase = BuildFakeSqlDatabase();
-
-        Check.That(new MegaTransferEngine(sqlDatabase, httpRiskClient)
+        Check.That(new MegaTransferEngine(_sqlDatabase, _httpRiskClient)
             .MakeTransfer(new BankTransfer.BankTransfer("Bruno", "Sébastien", 500, true),
                 KindOfChannel.Web)).IsTrue();
-        sqlDatabase.Received().UpdateBalance("Sébastien", 500);
+        _sqlDatabase.Received().UpdateBalance("Sébastien", 500);
     }
 
     private static IProvideSqlDatabase BuildFakeSqlDatabase()
