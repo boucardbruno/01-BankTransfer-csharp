@@ -8,8 +8,8 @@ namespace TransferEngineTest;
 
 public class MegaTransferEngineTest
 {
-    private IProvideHttpClient _httpRiskClient = BuildFakeHttpClient();
-    private IProvideSqlDatabase _sqlDatabase = BuildFakeSqlDatabase();
+    private IProvideHttpClient _httpRiskClient = null!;
+    private IProvideSqlDatabase _sqlDatabase = null!;
 
     [SetUp]
     public void Setup()
@@ -58,7 +58,7 @@ public class MegaTransferEngineTest
     [Test]
     public void Should_raise_exception_when_global_state_is_in_maintenance()
     {
-        GlobalState.Maintenance = true;
+        TransactionLedger.SetMaintenanceMode(true);
 
         Check.ThatCode(() => new MegaTransferEngine(_sqlDatabase, _httpRiskClient)
             .MakeTransfer(new BankTransfer.BankTransfer("Bruno", "Sébastien", 500, true),

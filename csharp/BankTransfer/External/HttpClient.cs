@@ -1,4 +1,4 @@
-namespace BankTransfer;
+namespace BankTransfer.External;
 
 public class HttpClient(HttpRiskClient httpRiskClient) : IProvideHttpClient
 {

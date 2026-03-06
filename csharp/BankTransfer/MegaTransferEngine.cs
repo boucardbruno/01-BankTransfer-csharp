@@ -1,4 +1,5 @@
 ﻿using BankTransfer.External;
+using HttpClient = BankTransfer.External.HttpClient;
 
 namespace BankTransfer;
 

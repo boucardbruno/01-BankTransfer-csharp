@@ -1,4 +1,4 @@
-namespace BankTransfer.External;
+namespace BankTransfer;
 
 public interface IProvideSqlDatabase
 {

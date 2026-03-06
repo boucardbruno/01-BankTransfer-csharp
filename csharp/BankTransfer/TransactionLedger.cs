@@ -19,4 +19,9 @@ public class TransactionLedger
     {
         return GlobalState.TransferCount > limit;
     }
+
+    public static void SetMaintenanceMode(bool mode)
+    {
+        GlobalState.Maintenance = mode;
+    }
 }
