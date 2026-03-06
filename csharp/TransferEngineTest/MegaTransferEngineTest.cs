@@ -23,31 +23,35 @@ public class MegaTransferEngineTest
     public void Should_not_transfer_with_channel_is_Mobile_when_bank_transfer_is_not_VIP()
     {
         Check.That(new MegaTransferEngine(_sqlDatabase, _httpRiskClient)
-            .MakeTransfer(new BankTransfer.BankTransfer("Bruno", "Sébastien", 500, true),
-                KindOfChannel.Web)).IsTrue();
+            .MakeTransfer(new BankTransfer
+                    .BankTransfer("Bruno", "Sébastien", 500, false),
+                KindOfChannel.Mobile)).IsFalse();
     }
 
     [Test]
     public void Should_not_transfer_with_channel_is_Web_when_bank_transfer_is_not_VIP()
     {
         Check.That(new MegaTransferEngine(_sqlDatabase, _httpRiskClient)
-            .MakeTransfer(new BankTransfer.BankTransfer("Bruno", "Sébastien", 500, true),
-                KindOfChannel.Web)).IsTrue();
+            .MakeTransfer(new BankTransfer
+                    .BankTransfer("Bruno", "Sébastien", 500, false),
+                KindOfChannel.Web)).IsFalse();
     }
 
     [Test]
     public void Should_not_transfer_with_channel_is_Mobile_when_bank_transfer_is_VIP()
     {
         Check.That(new MegaTransferEngine(_sqlDatabase, _httpRiskClient)
-            .MakeTransfer(new BankTransfer.BankTransfer("Bruno", "Sébastien", 500, true),
-                KindOfChannel.Web)).IsTrue();
+            .MakeTransfer(new BankTransfer
+                    .BankTransfer("Bruno", "Sébastien", 500, true), 
+                KindOfChannel.Mobile)).IsTrue();
     }
 
     [Test]
     public void Should_not_transfer_with_Web_channel_when_bank_transfer_is_not_VIP()
     {
         Check.That(new MegaTransferEngine(_sqlDatabase, _httpRiskClient)
-            .MakeTransfer(new BankTransfer.BankTransfer("Bruno", "Sébastien", 500, false),
+            .MakeTransfer(new BankTransfer
+                    .BankTransfer("Bruno", "Sébastien", 500, false),
                 KindOfChannel.Web)).IsFalse();
     }
 
@@ -64,15 +68,11 @@ public class MegaTransferEngineTest
     [Test]
     public void Should_return_cache_empty_when_transfer_limit_is_exceeded()
     {
-        for (var i = 1; GlobalState.TransferCount < 100; i++)
+        for (var i = 1; GlobalState.TransferCount <= 100; i++)
             new MegaTransferEngine(_sqlDatabase, _httpRiskClient)
                 .MakeTransfer(new BankTransfer.BankTransfer("Bruno", "Sébastien", 500, true),
                     i % 2 == 0 ? KindOfChannel.Web : KindOfChannel.Mobile);
-
-        new MegaTransferEngine(_sqlDatabase, _httpRiskClient)
-            .MakeTransfer(new BankTransfer.BankTransfer("Bruno", "Sébastien", 500, true),
-                KindOfChannel.Web);
-
+        
         Check.That(GlobalState.Cache).HasSize(0);
     }
 
